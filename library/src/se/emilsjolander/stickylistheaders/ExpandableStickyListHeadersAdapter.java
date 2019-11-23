@@ -14,7 +14,7 @@ import java.util.List;
  */
  class ExpandableStickyListHeadersAdapter extends BaseAdapter implements StickyListHeadersAdapter {
 
-    private final StickyListHeadersAdapter mInnerAdapter;
+    protected final StickyListHeadersAdapter mInnerAdapter;
     DualHashMap<View,Long> mViewToItemIdMap = new DualHashMap<View, Long>();
     DistinctMultiHashMap<Integer,View> mHeaderIdToViewMap = new DistinctMultiHashMap<Integer, View>();
     List<Long> mCollapseHeaderIds = new ArrayList<Long>();

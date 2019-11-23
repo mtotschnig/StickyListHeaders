@@ -2,8 +2,9 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 22
-    buildToolsVersion '25.0.3'
-
+    defaultConfig {
+        minSdkVersion 14
+    }
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
