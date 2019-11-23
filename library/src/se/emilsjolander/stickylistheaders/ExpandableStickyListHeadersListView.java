@@ -3,8 +3,6 @@ package se.emilsjolander.stickylistheaders;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-
-import android.widget.SectionIndexer;
 import java.util.List;
 
 /**
@@ -54,8 +52,8 @@ public class ExpandableStickyListHeadersListView extends StickyListHeadersListVi
 
     @Override
     public void setAdapter(StickyListHeadersAdapter adapter) {
-        mExpandableStickyListHeadersAdapter = (adapter instanceof SectionIndexer) ?
-            new SectionIndexingExpandableStickyListHeadersAdapter(adapter) :
+        mExpandableStickyListHeadersAdapter = (adapter instanceof SectionIndexingStickyListHeadersAdapter) ?
+            new SectionIndexingExpandableStickyListHeadersAdapter(((SectionIndexingStickyListHeadersAdapter) adapter)) :
             new ExpandableStickyListHeadersAdapter(adapter);
         super.setAdapter(mExpandableStickyListHeadersAdapter);
     }

@@ -4,23 +4,26 @@ import android.widget.SectionIndexer;
 
 public class SectionIndexingExpandableStickyListHeadersAdapter extends ExpandableStickyListHeadersAdapter implements SectionIndexer {
 
-	SectionIndexingExpandableStickyListHeadersAdapter(StickyListHeadersAdapter innerAdapter) {
+	SectionIndexingExpandableStickyListHeadersAdapter(SectionIndexingStickyListHeadersAdapter innerAdapter) {
 		super(innerAdapter);
-		if (!(innerAdapter instanceof SectionIndexer)) throw new IllegalArgumentException("Wrapped adapter must implement SectionIndexer");
 	}
 
 	@Override
 	public Object[] getSections() {
-		return ((SectionIndexer) mInnerAdapter).getSections();
+		return getAdapter().getSections();
 	}
 
 	@Override
 	public int getPositionForSection(int sectionIndex) {
-		return ((SectionIndexer) mInnerAdapter).getPositionForSection(sectionIndex);
+		return getAdapter().getPositionForSection(sectionIndex);
 	}
 
 	@Override
 	public int getSectionForPosition(int position) {
-		return ((SectionIndexer) mInnerAdapter).getSectionForPosition(position);
+		return getAdapter().getSectionForPosition(position);
+	}
+
+	private SectionIndexingStickyListHeadersAdapter getAdapter() {
+		return ((SectionIndexingStickyListHeadersAdapter) mInnerAdapter);
 	}
 }

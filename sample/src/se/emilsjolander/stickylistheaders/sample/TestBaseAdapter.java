@@ -5,15 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.SectionIndexer;
 import android.widget.TextView;
-
 import java.util.ArrayList;
+import se.emilsjolander.stickylistheaders.SectionIndexingStickyListHeadersAdapter;
 
-import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
-
-public class TestBaseAdapter extends BaseAdapter implements
-        StickyListHeadersAdapter, SectionIndexer {
+public class TestBaseAdapter extends BaseAdapter implements SectionIndexingStickyListHeadersAdapter {
 
     private final Context mContext;
     private String[] mCountries;
