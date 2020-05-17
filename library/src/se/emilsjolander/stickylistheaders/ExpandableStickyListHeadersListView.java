@@ -102,11 +102,11 @@ public class ExpandableStickyListHeadersListView extends StickyListHeadersListVi
     }
 
     public List<Long> getCollapsedHeaderIds() {
-        return mExpandableStickyListHeadersAdapter.mCollapseHeaderIds;
+        return mExpandableStickyListHeadersAdapter.getCollapseHeaderIds();
     }
 
     public void setCollapsedHeaderIds(List<Long> collapsedHeaderIds ) {
-        mExpandableStickyListHeadersAdapter.mCollapseHeaderIds = collapsedHeaderIds;
+        mExpandableStickyListHeadersAdapter.setCollapseHeaderIds(collapsedHeaderIds);
     }
 
     public void setAnimExecutor(IAnimationExecutor animExecutor) {
