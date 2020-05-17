@@ -135,7 +135,7 @@ public class ExpandableStickyListHeadersListView extends StickyListHeadersListVi
 
     @Override
     public Parcelable onSaveInstanceState() {
-        return new SavedState(super.onSaveInstanceState(), mExpandableStickyListHeadersAdapter.mCollapseHeaderIds);
+        return new SavedState(super.onSaveInstanceState(), mExpandableStickyListHeadersAdapter.getCollapseHeaderIds());
     }
 
     @Override
@@ -143,7 +143,7 @@ public class ExpandableStickyListHeadersListView extends StickyListHeadersListVi
         SavedState ss = (SavedState) state;
         super.onRestoreInstanceState(ss.getSuperState());
         if (mExpandableStickyListHeadersAdapter != null) {
-            mExpandableStickyListHeadersAdapter.mCollapseHeaderIds = ss.collapsedHeaderIds;
+            mExpandableStickyListHeadersAdapter.setCollapseHeaderIds(ss.collapsedHeaderIds);
         }
     }
 
