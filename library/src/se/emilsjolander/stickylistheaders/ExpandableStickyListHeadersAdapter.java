@@ -4,7 +4,6 @@ import android.database.DataSetObserver;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,12 +11,12 @@ import java.util.List;
 /**
  * @author lsjwzh
  */
- class ExpandableStickyListHeadersAdapter extends BaseAdapter implements StickyListHeadersAdapter {
+class ExpandableStickyListHeadersAdapter extends BaseAdapter implements StickyListHeadersAdapter {
 
     protected final StickyListHeadersAdapter mInnerAdapter;
     DualHashMap<View,Long> mViewToItemIdMap = new DualHashMap<View, Long>();
     DistinctMultiHashMap<Integer,View> mHeaderIdToViewMap = new DistinctMultiHashMap<Integer, View>();
-    List<Long> mCollapseHeaderIds = new ArrayList<Long>();
+    List<Long> mCollapseHeaderIds = new ArrayList<>();
 
     ExpandableStickyListHeadersAdapter(StickyListHeadersAdapter innerAdapter){
         this.mInnerAdapter = innerAdapter;

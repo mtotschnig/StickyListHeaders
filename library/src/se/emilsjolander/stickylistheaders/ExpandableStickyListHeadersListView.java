@@ -1,8 +1,11 @@
 package se.emilsjolander.stickylistheaders;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +22,7 @@ public class ExpandableStickyListHeadersListView extends StickyListHeadersListVi
 
     ExpandableStickyListHeadersAdapter mExpandableStickyListHeadersAdapter;
 
-
+    List<Long> mCollapseHeaderIds;
 
     IAnimationExecutor mDefaultAnimExecutor = new IAnimationExecutor() {
         @Override
@@ -55,6 +58,10 @@ public class ExpandableStickyListHeadersListView extends StickyListHeadersListVi
         mExpandableStickyListHeadersAdapter = (adapter instanceof SectionIndexingStickyListHeadersAdapter) ?
             new SectionIndexingExpandableStickyListHeadersAdapter(((SectionIndexingStickyListHeadersAdapter) adapter)) :
             new ExpandableStickyListHeadersAdapter(adapter);
+        if (mCollapseHeaderIds != null) {
+            mExpandableStickyListHeadersAdapter.mCollapseHeaderIds = mCollapseHeaderIds;
+            mCollapseHeaderIds = null;
+        }
         super.setAdapter(mExpandableStickyListHeadersAdapter);
     }
 
@@ -122,6 +129,59 @@ public class ExpandableStickyListHeadersListView extends StickyListHeadersListVi
             mDefaultAnimExecutor.executeAnim(target,type);
         }
 
+    }
+
+    @Override
+    public Parcelable onSaveInstanceState() {
+        return new SavedState(super.onSaveInstanceState(), mExpandableStickyListHeadersAdapter.mCollapseHeaderIds);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        SavedState ss = (SavedState) state;
+        super.onRestoreInstanceState(ss.getSuperState());
+        mCollapseHeaderIds = ss.collapsedIds;
+        if (mExpandableStickyListHeadersAdapter != null) {
+            mExpandableStickyListHeadersAdapter.mCollapseHeaderIds = mCollapseHeaderIds;
+        }
+    }
+
+    static class SavedState extends BaseSavedState {
+        private List<Long> collapsedIds;
+
+        /**
+         * Constructor called from {@link StickyListHeadersListView#onSaveInstanceState()}
+         */
+        SavedState(Parcelable superState, List<Long> collapsedIds) {
+            super(superState);
+            this.collapsedIds = collapsedIds;
+        }
+
+        /**
+         * Constructor called from {@link #CREATOR}
+         */
+        private SavedState(Parcel in) {
+            super(in);
+            collapsedIds = new ArrayList<>();
+            in.readList(collapsedIds, null);
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeList(collapsedIds);
+        }
+
+        public static final Parcelable.Creator<SavedState> CREATOR
+            = new Parcelable.Creator<SavedState>() {
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
     }
 
 }
