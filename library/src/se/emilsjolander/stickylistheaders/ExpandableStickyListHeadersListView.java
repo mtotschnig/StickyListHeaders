@@ -22,8 +22,6 @@ public class ExpandableStickyListHeadersListView extends StickyListHeadersListVi
 
     ExpandableStickyListHeadersAdapter mExpandableStickyListHeadersAdapter;
 
-    List<Long> mCollapseHeaderIds;
-
     IAnimationExecutor mDefaultAnimExecutor = new IAnimationExecutor() {
         @Override
         public void executeAnim(View target, int animType) {
@@ -58,10 +56,6 @@ public class ExpandableStickyListHeadersListView extends StickyListHeadersListVi
         mExpandableStickyListHeadersAdapter = (adapter instanceof SectionIndexingStickyListHeadersAdapter) ?
             new SectionIndexingExpandableStickyListHeadersAdapter(((SectionIndexingStickyListHeadersAdapter) adapter)) :
             new ExpandableStickyListHeadersAdapter(adapter);
-        if (mCollapseHeaderIds != null) {
-            mExpandableStickyListHeadersAdapter.mCollapseHeaderIds = mCollapseHeaderIds;
-            mCollapseHeaderIds = null;
-        }
         super.setAdapter(mExpandableStickyListHeadersAdapter);
     }
 
@@ -107,6 +101,10 @@ public class ExpandableStickyListHeadersListView extends StickyListHeadersListVi
         return  mExpandableStickyListHeadersAdapter.isHeaderCollapsed(headerId);
     }
 
+    public List<Long> getCollapsedHeaderIds() {
+        return mExpandableStickyListHeadersAdapter.mCollapseHeaderIds;
+    }
+
     public void setAnimExecutor(IAnimationExecutor animExecutor) {
         this.mDefaultAnimExecutor = animExecutor;
     }
@@ -140,21 +138,20 @@ public class ExpandableStickyListHeadersListView extends StickyListHeadersListVi
     public void onRestoreInstanceState(Parcelable state) {
         SavedState ss = (SavedState) state;
         super.onRestoreInstanceState(ss.getSuperState());
-        mCollapseHeaderIds = ss.collapsedIds;
         if (mExpandableStickyListHeadersAdapter != null) {
-            mExpandableStickyListHeadersAdapter.mCollapseHeaderIds = mCollapseHeaderIds;
+            mExpandableStickyListHeadersAdapter.mCollapseHeaderIds = ss.collapsedHeaderIds;
         }
     }
 
     static class SavedState extends BaseSavedState {
-        private List<Long> collapsedIds;
+        private List<Long> collapsedHeaderIds;
 
         /**
          * Constructor called from {@link StickyListHeadersListView#onSaveInstanceState()}
          */
-        SavedState(Parcelable superState, List<Long> collapsedIds) {
+        SavedState(Parcelable superState, List<Long> collapsedHeaderIds) {
             super(superState);
-            this.collapsedIds = collapsedIds;
+            this.collapsedHeaderIds = collapsedHeaderIds;
         }
 
         /**
@@ -162,14 +159,14 @@ public class ExpandableStickyListHeadersListView extends StickyListHeadersListVi
          */
         private SavedState(Parcel in) {
             super(in);
-            collapsedIds = new ArrayList<>();
-            in.readList(collapsedIds, null);
+            collapsedHeaderIds = new ArrayList<>();
+            in.readList(collapsedHeaderIds, null);
         }
 
         @Override
         public void writeToParcel(Parcel out, int flags) {
             super.writeToParcel(out, flags);
-            out.writeList(collapsedIds);
+            out.writeList(collapsedHeaderIds);
         }
 
         public static final Parcelable.Creator<SavedState> CREATOR
