@@ -1,10 +1,9 @@
 package se.emilsjolander.stickylistheaders;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.RequiresApi;
+import android.support.v4.view.AbsSavedState;
 import android.util.AttributeSet;
 import android.view.View;
 import java.util.ArrayList;
@@ -149,7 +148,7 @@ public class ExpandableStickyListHeadersListView extends StickyListHeadersListVi
         }
     }
 
-    static class SavedState extends BaseSavedState {
+    static class SavedState extends AbsSavedState {
         private List<Long> collapsedHeaderIds;
 
         /**
@@ -160,20 +159,11 @@ public class ExpandableStickyListHeadersListView extends StickyListHeadersListVi
             this.collapsedHeaderIds = collapsedHeaderIds;
         }
 
-        /**
-         * Constructor called from {@link #CREATOR}
-         */
-        private SavedState(Parcel in) {
-            super(in);
-            readValues(in, null);
-        }
-
         private void readValues(Parcel in, ClassLoader loader) {
             collapsedHeaderIds = new ArrayList<>();
             in.readList(collapsedHeaderIds, loader);
         }
 
-        @RequiresApi(24)
         SavedState(Parcel in, ClassLoader loader) {
             super(in, loader);
             readValues(in, loader);
@@ -188,9 +178,7 @@ public class ExpandableStickyListHeadersListView extends StickyListHeadersListVi
         public static final Creator<SavedState> CREATOR = new ClassLoaderCreator<SavedState>() {
             @Override
             public SavedState createFromParcel(Parcel source, ClassLoader loader) {
-                return Build.VERSION.SDK_INT >= 24
-                    ? new SavedState(source, loader)
-                    : new SavedState(source);
+                return new SavedState(source, loader);
             }
 
             @Override
