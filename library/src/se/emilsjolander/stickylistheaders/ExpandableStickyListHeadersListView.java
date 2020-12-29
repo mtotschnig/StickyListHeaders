@@ -3,7 +3,7 @@ package se.emilsjolander.stickylistheaders;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.view.AbsSavedState;
+import androidx.customview.view.AbsSavedState;
 import android.util.AttributeSet;
 import android.view.View;
 import java.util.ArrayList;
